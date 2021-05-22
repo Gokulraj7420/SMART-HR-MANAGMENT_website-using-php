@@ -1,0 +1,164 @@
+
+inserting employee details:
+INSERT INTO `employee`(`id`, `firstName`, `lastName`, `email`, `password`, `birthday`, `gender`, `contact`, `nid`,  
+`address`, `dept`, `degree`, `pic`) VALUES ('','$firstname','$lastName','$email','1234','$birthday','$gender','
+$contact','$nid','$address','$dept','$degree','$destinationfile')
+
+creating salary data and rank data also while creating employee:
+INSERT INTO `salary`(`id`, `base`, `bonus`, `total`) VALUES ('$last_id','$salary',0,'$salary')
+INSERT INTO `rank`(`eid`) VALUES ('$last_id')
+
+
+
+
+
+
+when an employee apply for leave: 
+INSERT INTO `employee_leave`(`id`,`token`, `start`, `end`, `reason`, `status`) VALUES 
+('$id','','$start','$end','$reason','Pending')
+
+
+
+
+when an admin tries to login:
+SELECT * from `alogin` WHERE email = '$email' AND password = '$password'
+
+
+
+when an project is assigned to an employee this table is created:
+INSERT INTO `project`(`eid`, `pname`, `duedate` , `status`) VALUES ('$eid' , '$pname' , '$subdate' , 'Due')
+
+
+
+
+
+when an employee tries to login first we check the password and email then getting employee id for furture use:
+SELECT * from `employee` WHERE email = '$email' AND password = '$password'
+SELECT id from `employee` WHERE email = '$email' AND password = '$password'
+
+
+
+
+when an admin login he sees rank of employee that statement is selected from this querry:
+SELECT id, firstName, lastName,  points FROM employee, rank WHERE rank.eid = employee.id order by rank.points desc
+
+
+
+
+selecting employee id from the php so,that we dont need to enter always:
+SELECT * FROM `employee` where id = '$id'
+
+
+
+Select employee.id, employee.firstName, employee.lastName, employee_leave.start, employee_leave.end, 
+employee_leave.reason, employee_leave.status From employee, employee_leave Where employee.id = $id and 
+employee_leave.id = $id order by employee_leave.token
+
+
+
+when admin approve the leave we are editting the leave table that the status is Approved:
+UPDATE `employee_leave` SET `status`='Approved' WHERE id = $id AND token = $token;
+
+
+
+
+the assigned projects details are displayed to admin:
+SELECT * from `project` order by subdate desc
+
+
+
+
+when admin cancel the leave we are editting the leave table that the status is cancel:
+UPDATE `employee_leave` SET `status`='Cancelled' WHERE `id`=$id and `token` = $token
+
+
+
+
+employee try to change password :
+select employee.password from employee WHERE id = $id
+UPDATE `employee` SET `password`='$new' WHERE id = $id
+
+
+
+
+employee details is deleted from database:
+DELETE FROM employee WHERE id=$id
+
+
+
+
+
+displaying employee salary details to admin:
+SELECT employee.id,employee.firstName,employee.lastName,salary.base,salary.bonus,salary.total 
+from employee,`salary` where employee.id=salary.id
+
+
+
+
+
+when employee gives project submitted we are updating the table that he has submitted and it will be shown to admin:
+UPDATE `project` SET `subdate`='$date',`status`='Submitted' WHERE pid = '$pid'
+
+
+
+
+
+employee tries to update certain details:
+UPDATE `employee` SET `email`='$email',`contact`='$contact',`address`='$address' WHERE id=$id
+
+
+
+
+
+
+when employee tries to see his own personal information we getting details 
+from employee and salary table and then displaying:
+SELECT * from `employee` WHERE id=$id
+SELECT total from `salary` WHERE id = $id
+
+
+
+
+
+
+
+dislaying project details to employee based on there id:
+SELECT * FROM `project` where eid = '$id'
+
+
+
+
+updating employee details by admin:
+UPDATE `employee` SET `firstName`='$firstname',`lastName`='$lastname',`email`='$email',`birthday`='$birthday'
+,`gender`='$gender',`contact`='$contact',`nid`='$nid',`address`='$address',`dept`='$dept',`degree`='$degree' 
+WHERE id=$id
+
+
+
+
+
+displying project status of the employee:
+SELECT pid, project.eid, pname, duedate, subdate, mark, points, firstName, lastName, base, bonus, total 
+FROM `project` , `rank` ,`employee`, `salary`  WHERE project.eid = $id AND pid = $pid
+
+
+
+
+
+
+updateing employee mark whenever the submit there project which has to be updated in all tables:
+UPDATE `project` SET `mark`='$mark' WHERE eid=$eid and pid = $pid
+UPDATE `rank` SET `points`='$upPoint' WHERE eid=$eid
+UPDATE `salary` SET `bonus`='$upBonus' ,`total`='$upSalary' WHERE id=$eid
+SELECT pid, project.eid, project.pname, project.duedate, project.subdate, project.mark, rank.points, 
+employee.firstName, employee.lastName, salary.base, salary.bonus, salary.total FROM `project` , `rank` ,`employee`, `salary`  
+WHERE project.eid = $id AND project.pid = $pid AND project.eid = rank.eid AND salary.id = project.eid 
+AND employee.id = project.eid AND employee.id = rank.eid
+
+
+
+
+
+
+
+
